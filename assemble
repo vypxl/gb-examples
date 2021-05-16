@@ -1,0 +1,9 @@
+#! /bin/sh
+asm="rgbasm -i include -i src"
+if [[ $# -eq 2 ]]; then
+    $asm -o - "$1" | rgblink -n "$(echo "$2" | cut -d'.' -f1).sym" -o - - | rgbfix -v -p 0 - > "$2"
+elif [[ $# -eq 1 ]]; then
+    $asm -o - "$1" | rgblink -n "$(echo "$1" | cut -d'.' -f1).sym" -o - - | rgbfix -v -p 0 - > "$(echo "$1" | cut -d'.' -f1).gb"
+elif [[ $# -eq 0 ]]; then
+    $asm -o - - | rgblink -o - - | rgbfix -v -p 0 -
+fi
